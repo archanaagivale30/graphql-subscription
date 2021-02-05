@@ -1,7 +1,5 @@
 import { Router } from 'express';
-import * as Designation from './Designation';
-import * as Employee from './Employee';
-//import * as User from '../schema/User';
+import VehicleController from '../controllers/Vehicle';
 
 var { buildSchema } = require('graphql');
 
@@ -9,21 +7,6 @@ var { buildSchema } = require('graphql');
  * @export
  * @class GraphQLIndex
  */
-const types=[];
-const queries=[];
-const mutations=[];
-const inputs=[];
-const roots=[];
-
-const schemas=[Designation,Employee];
-
-schemas.forEach(s=>{
-    types.push(s.types);
-    queries.push(s.queries)
-    mutations.push(s.mutations)
-    inputs.push(s.inputs)
-    roots.push(s.roots);
-})
 export default class Schema {
     public router: Router;
     public schema: Object;
@@ -32,16 +15,37 @@ export default class Schema {
     constructor() {
         
         this.schema = buildSchema(`
-            ${inputs.join("\n")}     
+        scalar DateTime
+
+        type VehicleLocation {
+            id :ID!,
+            lat : Float,
+            lng : Float,
+            created : DateTime,
+            updatedAt : DateTime
+            } 
+          input VehicleLocationInput {
+              lat : Float,
+              lng : Float,
+            }    
          type Query {
-            ${queries.join("\n")}
-         },
+          VehicleLocations: [VehicleLocation]
+        },
          type Mutation {
-            ${mutations.join("\n")}
+          createVehicleLocation(input: VehicleLocationInput): VehicleLocation
+        },
+
+          type Subscription {
+            newVehicleLocation: VehicleLocation!
           }
-          ${types.join("\n")}     
-     `);
-        this.root=Object.assign({},...roots)
+          
+             `);
+        this.root={
+          VehicleLocations: VehicleController.getAllVehicles,
+          createVehicleLocation: VehicleController.create,
+          newVehicleLocation:VehicleController.getNewVehicle
+      }
+      
         this.router = Router();
     }
 

@@ -4,9 +4,9 @@
         "jsx": "react",
         "module": "commonjs",
         "noImplicitAny": false,
-        "target": "es5",
+        "target": "es6",
         "sourceMap": true,
-        "lib": ["es5", "es2015", "dom", "scripthost"],
+        "lib": ["es6", "es2016", "dom", "scripthost"],
         "plugins": [
             {
                 "name": "tslint-language-service"
@@ -16,3 +16,5 @@
     "include": ["./src/**/*"],
     "exclude": ["node_modules"]
 }
+
+

@@ -6,7 +6,7 @@ import * as mongoose from 'mongoose';
  const envConfig = {
     database: {
         MONGODB_URI: 'mongodb://localhost:27017/',
-        MONGODB_DB_MAIN: 'dev_DB'
+        MONGODB_DB_MAIN: 'chat_App'
     }
 };
 interface IConnectOptions {
